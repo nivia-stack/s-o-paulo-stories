@@ -1,10 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+/* No seu index.css ou globals.css */
+
+@keyframes rotate-phone {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes progress-loading {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-rotate-phone {
+  animation: rotate-phone 2s ease-in-out infinite;
+}
+
+.animate-progress {
+  animation: progress-loading 2s linear infinite;
+}
 
 @layer base {
+
   :root {
     --background: 30 10% 8%;
     --foreground: 40 20% 90%;

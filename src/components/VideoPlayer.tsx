@@ -23,7 +23,7 @@ const VideoPlayer = ({ src, title, onFinished, onStop }: VideoPlayerProps) => {
         </h2>
         <button
           onClick={onStop}
-          className="flex items-center gap-2 rounded-lg border border-destructive/40 bg-background/70 px-4 py-2 text-sm text-destructive backdrop-blur-sm transition-colors hover:bg-destructive/10"
+          className="flex items-center gap-2 rounded-lg border border-destructive/40 bg-background/70 px-4 py-2 text-sm text-white backdrop-blur-sm transition-colors hover:bg-destructive/10"
         >
           <Square className="h-4 w-4" />
           <span className="hidden sm:inline">Parar</span>

@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import IntroVideo from "@/components/IntroVideo";
 import HomeScreen from "@/components/HomeScreen";
 import VideoPlayer from "@/components/VideoPlayer";
+import RotationAlert from "@/components/RotationAlert";
 
 const VIDEO_MAP: Record<string, { src: string; title: string }> = {
   patio: { src: "/videos/patio-do-colegio.mp4", title: "Pátio do Colégio" },
@@ -24,6 +25,12 @@ const Index = () => {
     setCurrentId("");
   }, []);
 
+  const resetToIntro = useCallback(() => {
+    setScreen("intro");
+    setQueue([]);
+    setCurrentId("")
+  }, [])
+
   const playVideo = useCallback((ids: string[]) => {
     if (ids.length === 0) return;
     setCurrentId(ids[0]);
@@ -35,11 +42,13 @@ const Index = () => {
     (id: string) => {
       if (id === "all") {
         playVideo([...PLAY_ORDER]);
-      } else {
+      } else if (id == "home") {
+        resetToIntro();
+      }  else {
         playVideo([id]);
       }
     },
-    [playVideo]
+    [playVideo, resetToIntro]
   );
 
   const handleVideoFinished = useCallback(() => {
@@ -51,24 +60,37 @@ const Index = () => {
     }
   }, [queue, goHome]);
 
-  if (screen === "intro") {
-    return <IntroVideo onFinished={goHome} />;
-  }
+  const renderCurrentScreen = () => {
+    if (screen === "intro") {
+      return <IntroVideo onFinished={goHome} />;
+    }
 
-  if (screen === "playing" && currentId && VIDEO_MAP[currentId]) {
-    const video = VIDEO_MAP[currentId];
-    return (
-      <VideoPlayer
-        key={currentId}
-        src={video.src}
-        title={video.title}
-        onFinished={handleVideoFinished}
-        onStop={goHome}
-      />
-    );
-  }
+    if (screen === "playing" && currentId && VIDEO_MAP[currentId]) {
+      const video = VIDEO_MAP[currentId];
+    
+      return (
+        <VideoPlayer
+          key={currentId}
+          src={video.src}
+          title={video.title}
+          onFinished={handleVideoFinished}
+          onStop={goHome}
+        />
+      );
+    }
 
-  return <HomeScreen onSelect={handleSelect} />;
+    return <HomeScreen onSelect={handleSelect} />;
+  };
+
+  return (
+    <div className="min-h-screen w-full">
+      {/* O alerta fica aqui. No CSS ele tem portrait:flex e sm:hidden */}
+      <RotationAlert /> 
+
+      {/* A tela atual renderiza aqui em baixo */}
+      {renderCurrentScreen()}
+    </div>
+  );
 };
 
 export default Index;
